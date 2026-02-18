@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Блог Twitch-канала JaffSayfer ✦ Магия стримов</title>
+    <style>
+        /* Сброс отступов и базовые настройки */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            position: relative;
+            color: #f0e9ff;
+        }
+
+        /* Анимированные звёзды на фоне */
+        @keyframes moveStars {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-2000px); }
+        }
+
+        .stars, .twinkling, .clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .stars {
+            background: #000 url('https://i.imgur.com/YKY28eT.png') repeat top center;
+            z-index: -3;
+        }
+
+        .twinkling {
+            background: transparent url('https://i.imgur.com/XYMF4ca.png') repeat top center;
+            animation: moveStars 200s linear infinite;
+            z-index: -2;
+        }
+
+        /* Основной контейнер */
+        .blog-container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(20, 15, 35, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(170, 130, 240, 0.2) inset;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Все тексты теперь по центру */
+        h1, h2, h3, p, .note, .cards-container, .card, footer {
+            text-align: center;
+        }
+
+        /* Но списки в карточках оставим с выравниванием влево, чтобы удобнее читать,
+           но сами карточки по центру */
+        .card ul, .card .about-list {
+            text-align: left;
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px #b87cff, 0 0 30px #7a4caf;
+            letter-spacing: 2px;
+        }
+
+        h1 em {
+            font-size: 1.2rem;
+            display: block;
+            color: #cfb3ff;
+            text-shadow: none;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin: 40px 0 20px;
+            color: #d9c5ff;
+            border-bottom: 2px dashed #a07eff;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.7rem;
+            margin: 30px 0 15px;
+            color: #e2d1ff;
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #aa82ff, #d6b0ff, #aa82ff, transparent);
+            margin: 40px 0;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 12px 0;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(200, 160, 255, 0.2);
+            display: inline-block;
+            width: auto;
+        }
+
+        .note {
+            background: rgba(160, 120, 255, 0.2);
+            border-left: 6px solid #a67cff;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 30px 0;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px rgba(170, 120, 255, 0.3);
+            backdrop-filter: blur(6px);
+        }
+
+        /* Карточки */
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .card {
+            background: rgba(30, 20, 50, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 25px 20px;
+            width: 300px;
+            border: 1px solid rgba(220, 190, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(200, 160, 255, 0.2) inset;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.8), 0 0 25px #b07cff;
+        }
+
+        .card-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-header img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #b07cff;
+            box-shadow: 0 0 30px #c79bff;
+            background: #2a1b3e;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            border-bottom: none;
+            color: #f0e2ff;
+        }
+
+        .card-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #e5d5ff;
+        }
+
+        .rule-list, .about-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0;
+            text-align: left;
+        }
+
+        .rule-list li, .about-list li {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(200, 160, 255, 0.15);
+            border-radius: 40px;
+            padding: 10px 18px;
+            margin: 8px 0;
+            font-size: 1rem;
+            display: block;
+            backdrop-filter: blur(2px);
+        }
+
+        .rule-list li::before {
+            content: "✦";
+            color: #d5aaff;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .about-list li::before {
+            content: "✨";
+            margin-right: 10px;
+        }
+
+        .donate-note {
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid #ffd966;
+            border-radius: 60px;
+            padding: 15px;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #fff3c9;
+            text-shadow: 0 0 8px #ffb700;
+            backdrop-filter: blur(4px);
+        }
+
+        footer {
+            margin-top: 50px;
+            color: #b7a4d4;
+            font-size: 1rem;
+            text-shadow: 0 0 6px #7a5ac9;
+        }
+
+        a {
+            color: #d9bdff;
+            text-decoration: none;
+            border-bottom: 2px dotted #a06eff;
+        }
+
+        a:hover {
+            color: white;
+            border-bottom-color: #f0e2ff;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .blog-container { padding: 25px 15px; }
+            ul li { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Звёздный фон (анимация) -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <div class="blog-container">
+        <h1>📺 Блог Twitch-канала JaffSayfer<br><em>✦ Магия стримов и игр ✦</em></h1>
+
+        <p style="font-size: 1.3rem; margin: 20px 0;">Добро пожаловать в мой волшебный уголок! Здесь я рассказываю о стримах, играх и делюсь новостями.</p>
+
+        <hr>
+
+        <h2>🕹️ О чём канал</h2>
+        <p>Меня зовут <strong>Jaff_Sayfer</strong>, я стримлю разные игры, общаюсь с чатом и просто весело провожу время. Люблю как сюжетные проекты, так и мультиплеер. Присоединяйтесь!</p>
+
+        <h3>🌟 Основные игры сейчас:</h3>
+        <ul>
+            <li><strong>Elden Ring</strong> — перепрохождение легендарной игры.</li>
+            <li><strong>Minecraft</strong> — выживание и стройка на сервере.</li>
+        </ul>
+
+        <hr>
+
+        <h2>📅 Расписание стримов</h2>
+        <p>Стараюсь стримить регулярно, но из-за учёбы трудно подобрать время. Прошу понимания 🙏</p>
+
+        <div class="note">
+            <strong>💬 Хотите сыграть вместе?</strong> Пишите в чат во время трансляции или в Discord — я часто приглашаю зрителей!
+        </div>
+
+        <hr>
+
+        <h2>📢 Последние новости</h2>
+        <h3>⚔️ Прохождение основного сюжета в Elden Ring</h3>
+        <p>Получил новую камеру и микрофон — теперь картинка и звук стали значительно лучше. Спасибо всем, кто поддерживает!</p>
+
+        <h3>🏆 45 фолловеров на Twitch</h3>
+        <p>Мы достигли небольшого, но приятного юбилея — 45 подписчиков!</p>
+
+        <hr>
+
+        <h2>📌 Полезная информация</h2>
+        <div class="cards-container">
+            <!-- Donate карточка -->
+            <div class="card">
+                <div class="card-header">
+                    <img src="img/донаты.png" alt="Donate icon">
+                    <h2>Donate</h2>
+                </div>
+                <div class="card-content">
+                    <p>Буду очень благодарен за вашу денюшку 😊</p>
+                    <div class="donate-note">💸 Спасибо за поддержку!</div>
+                </div>
+            </div>
+
+            <!-- Правила чата карточка -->
+            <div class="card">
+                <div class="card-header">
+                    <img src="img/правила.png" alt="Rules icon">
+                    <h2>Правила чата</h2>
+                </div>
+                <div class="card-content">
+                    <p><strong>RULES / ПРАВИЛА / ЗАПРЕЩЕННО</strong></p>
+                    <ul class="rule-list">
+                        <li>Разжигание конфликтов и оскорбления</li>
+                        <li>Политика</li>
+                        <li>Реклама</li>
+                        <li>Излишний спам</li>
+                        <li>Нарушение правил Твича</li>
+                        <li>Спойлеры</li>
+                        <li>СЛИВЫ</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- About ME карточка -->
+            <div class="card">
+                <div class="card-header">
+                    <img src="img/обомне.png" alt="JaffSayfer avatar">
+                    <h2>About ME</h2>
+                </div>
+                <div class="card-content">
+                    <ul class="about-list">
+                        <li>Рад всех видеть.</li>
+                        <li>Меня зовут JaffSayfer, для друзей просто Jaff.</li>
+                        <li>День рождения 27 мая</li>
+                        <li>Играю в разные игры (если позволяют деньги)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2>🔗 Где меня найти</h2>
+        <ul>
+            <li><strong>Twitch:</strong> <a href="https://www.twitch.tv/jaffsayfer" target="_blank">twitch.tv/jaffsayfer</a></li>
+        </ul>
+
+        <footer>
+            © 2026 Блог JaffSayfer. Создано с магией ✨
+        </footer>
+    </div>
+</body>
+</html>
